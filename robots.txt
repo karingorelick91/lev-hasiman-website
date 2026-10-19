@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://levhasiman.co.il/sitemap.xml
