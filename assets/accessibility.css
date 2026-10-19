@@ -8,3 +8,24 @@ html[data-theme="dark"] .service .tag,html[data-theme="dark"] .eyebrow{color:#f3
 @media(max-width:650px){.container{padding-inline:16px}.header .head{justify-content:space-between;gap:12px}.header-actions{gap:8px}.header .logo{width:145px}.theme-toggle,.menu-toggle{font-size:1rem}.theme-label{font-size:1rem}.reviews-grid,.services,.audiences{grid-template-columns:minmax(0,1fr)}.wa-widget .whatsapp-float{width:54px;height:54px}.foot{align-items:flex-start;flex-direction:column}.buttons{flex-direction:column;align-items:stretch}.buttons .btn{width:100%}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 @media(forced-colors:active){.wa-dismiss,.wa-restore,.btn{border:2px solid ButtonText}.nav-icon,.wa-icon{forced-color-adjust:auto}}
+/* Keep the theme control anchored when its label and icon change. */
+@media(max-width:920px){
+.header .head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
+.header .head>a{grid-column:1;grid-row:1;min-width:0}
+.header .header-actions{grid-column:2;grid-row:1;display:flex;flex-wrap:nowrap;align-items:center;gap:8px;margin:0}
+.header .theme-toggle{box-sizing:border-box;flex:0 0 7.5rem;width:7.5rem;min-height:48px;flex-wrap:nowrap;white-space:nowrap;padding:7px 8px;gap:6px}
+.header .theme-icon{display:inline-flex;justify-content:center;align-items:center;flex:0 0 24px;width:24px;height:24px}
+.header .theme-label{font-size:1rem;white-space:nowrap}
+.header .menu-toggle{flex:none;min-height:48px;white-space:nowrap}
+.header .nav{grid-column:1 / -1;grid-row:2;width:100%;min-width:0;margin-top:0}
+}
+@media(max-width:420px){
+.header .logo{width:100px}
+.header .menu-toggle{width:44px;padding:6px}
+.header .menu-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+}
+@media(max-width:319px){
+.header .head{grid-template-columns:minmax(0,1fr)}
+.header .header-actions{grid-column:1;grid-row:2;justify-self:start}
+.header .nav{grid-row:3}
+}
