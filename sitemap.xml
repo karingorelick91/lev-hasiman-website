@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://levhasiman.co.il/</loc></url>
-<url><loc>https://levhasiman.co.il/sign-language-course/</loc></url>
-<url><loc>https://levhasiman.co.il/private-lessons/</loc></url>
-<url><loc>https://levhasiman.co.il/organizations/</loc></url>
-<url><loc>https://levhasiman.co.il/accessibility/</loc></url>
+  <url><loc>https://levhasiman.co.il/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/sign-language-course/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/private-lessons/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/digital-course/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/level-2/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/organizations/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/workshops/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/closed-groups/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/deaf-culture-lecture/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/usher-lecture/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/about/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/guides/learn-on-zoom/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/guides/fingerspelling/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/guides/first-course/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/guides/choose-learning-format/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/guides/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://levhasiman.co.il/accessibility/</loc><lastmod>2026-10-24</lastmod></url>
 </urlset>
