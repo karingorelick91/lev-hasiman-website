@@ -74,7 +74,16 @@ html[data-theme="dark"] .foot img{background:transparent}
 html[data-theme="dark"] .spelling-tool,html[data-theme="dark"] .spelling-entry input,html[data-theme="dark"] .spelling-settings select,html[data-theme="dark"] .spelling-sequence button:not(.is-active){background:var(--white)}
 @media(max-width:650px){.spelling-entry{flex-direction:column}.spelling-entry .btn{width:100%}.spelling-stage{gap:12px}.sign-image{width:min(64vw,220px)}.spelling-controls button{min-width:0;flex:1 1 100%}}
 @media(forced-colors:active){.sign-image{border:3px solid CanvasText}.spelling-tool{border:2px solid CanvasText}}
-</style></head><body data-page="guides/fingerspelling"><a class="skip" href="#main">דילוג לתוכן הראשי</a><header class="header"><div class="container head"><a aria-label="לב הסימן, מעבר לדף הבית" href="/"><img alt="לב הסימן, סטודיו לשפה, איור וסיפור" class="logo" height="87" src="/assets/logo.png" data-logo-light="/assets/logo.png" data-logo-dark="/assets/logo-dark.png" width="205"></a><div class="header-actions"><button type="button" class="theme-toggle" id="theme-toggle" aria-label="מצב כהה" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">מצב כהה</span></button><button type="button" class="menu-toggle" id="menu-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="פתיחת תפריט ניווט"><span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span><span class="menu-label">תפריט</span></button></div><nav id="site-nav" class="nav" aria-label="ניווט ראשי"><a href="/#courses">מסלולי לימוד</a><a href="/organizations/">לארגונים</a><a href="/about/">על קארין</a><a href="/#reviews">המלצות</a><a href="/guides/">מדריכים</a><a href="/#contact">יצירת קשר</a></nav></div></header><main id="main" tabindex="-1">
+
+.spelling-export{margin-top:6px;padding:24px;border-radius:18px;border:1px solid var(--line);background:var(--soft);display:grid;gap:12px;text-align:center}
+.spelling-export h2{font-size:clamp(1.4rem,3vw,1.9rem);margin:0 0 8px;color:var(--wine)}
+.spelling-export p{max-width:680px;margin:0 auto;line-height:1.65}
+.spelling-export-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center}
+.spelling-export-actions button{min-width:218px}
+.spelling-export button:disabled{opacity:.6;cursor:progress}
+.spelling-export .small-note{font-size:.95rem;min-height:1.5em}
+@media(max-width:650px){.spelling-export{padding:18px 12px}.spelling-export-actions{display:grid;grid-template-columns:1fr}.spelling-export-actions button{width:100%;min-width:0}}
+</style></head><body data-page="fingerspelling-practice"><a class="skip" href="#main">דילוג לתוכן הראשי</a><header class="header"><div class="container head"><a aria-label="לב הסימן, מעבר לדף הבית" href="/"><img alt="לב הסימן, סטודיו לשפה, איור וסיפור" class="logo" height="87" src="/assets/logo.png" data-logo-light="/assets/logo.png" data-logo-dark="/assets/logo-dark.png" width="205"></a><div class="header-actions"><button type="button" class="theme-toggle" id="theme-toggle" aria-label="מצב כהה" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">מצב כהה</span></button><button type="button" class="menu-toggle" id="menu-toggle" aria-controls="site-nav" aria-expanded="false" aria-label="פתיחת תפריט ניווט"><span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span><span class="menu-label">תפריט</span></button></div><nav id="site-nav" class="nav" aria-label="ניווט ראשי"><a href="/#courses">מסלולי לימוד</a><a href="/organizations/">לארגונים</a><a href="/about/">על קארין</a><a href="/#reviews">המלצות</a><a href="/guides/">מדריכים</a><a href="/#contact">יצירת קשר</a></nav></div></header><main id="main" tabindex="-1">
 <section class="service-hero spelling-intro"><div class="container">
 <nav class="breadcrumbs" aria-label="מיקום באתר"><a href="/">לב הסימן</a><span aria-hidden="true"> / </span><span>מאייתים מהלב</span></nav>
 <p class="eyebrow">מאייתים מהלב | תרגול חינמי באצבעות</p><h1>אימון איות בשפת הסימנים הישראלית</h1>
@@ -98,6 +107,11 @@ html[data-theme="dark"] .spelling-tool,html[data-theme="dark"] .spelling-entry i
 <div class="spelling-controls"><button type="button" class="btn secondary" id="spelling-prev">האות הקודמת</button><button type="button" class="btn" id="spelling-play">הפעלת איות</button><button type="button" class="btn secondary" id="spelling-next">האות הבאה</button></div>
 <div class="spelling-settings"><label for="spelling-speed">מהירות הניגון</label><select id="spelling-speed"><option value="1900">לאט</option><option value="1250" selected>רגיל</option><option value="800">מהר</option></select><button type="button" class="text-link" id="spelling-reset">חזרה להתחלה</button><button type="button" class="text-link" id="spelling-share">העתקת קישור למילה</button></div>
 <p id="spelling-feedback" class="small-note" aria-live="polite"></p>
+<div class="spelling-export" aria-labelledby="spelling-export-title">
+<div class="spelling-export-heading"><h2 id="spelling-export-title">השם שלי בשפת הסימנים</h2><p>הפכו את האיות שלכם לתמונה ממותגת של לב הסימן, שמתאימה לסטורי ולשיתוף עם חברים. ללא תשלום וללא הרשמה.</p></div>
+<div class="spelling-export-actions"><button class="btn" type="button" id="spelling-download">הורדת תמונה לסטורי</button><button class="btn secondary" type="button" id="spelling-native-share" hidden>שיתוף תמונה</button></div>
+<p class="small-note" id="spelling-export-status" role="status" aria-live="polite"></p>
+</div>
 </div></div>
 </div></section>
 <section class="section soft"><div class="container reading">
@@ -166,7 +180,7 @@ const form=document.getElementById('spelling-form'),input=document.getElementByI
 const image=document.getElementById('spelling-image'),current=document.getElementById('spelling-letter'),position=document.getElementById('spelling-position');
 const strip=document.getElementById('spelling-sequence'),error=document.getElementById('spelling-error'),feedback=document.getElementById('spelling-feedback');
 const play=document.getElementById('spelling-play'),prev=document.getElementById('spelling-prev'),next=document.getElementById('spelling-next'),speed=document.getElementById('spelling-speed');
-let sequence=[],index=0,timer=null;
+let sequence=[],index=0,timer=null,activeWord='';
 function stop(){if(timer!==null){clearInterval(timer);timer=null}play.textContent='הפעלת איות';play.setAttribute('aria-pressed','false')}
 function parse(value){const clean=value.normalize('NFC').replace(/[\u0591-\u05C7]/g,'');const valid=[...clean].filter(c=>letters[c]);return {clean,valid}}
 function render(){if(!sequence.length){current.textContent='';position.textContent='';image.removeAttribute('aria-label');image.style.backgroundPosition='0 0';prev.disabled=true;next.disabled=true;play.disabled=true;return}
@@ -179,7 +193,7 @@ function setWord(raw,updateUrl){stop();const parsed=parse(raw);error.hidden=true
 if(!parsed.valid.length){error.textContent='הקלידו לפחות אות אחת בעברית.';error.hidden=false;return false}
 if(parsed.valid.length>24){error.textContent='אפשר לתרגל עד 24 אותיות בכל פעם.';error.hidden=false;return false}
 const invalid=[...parsed.clean].filter(c=>!letters[c]&&!/\s/.test(c));if(invalid.length){error.textContent='אפשר להקליד רק אותיות בעברית ורווחים. ניקוד מוסר אוטומטית.';error.hidden=false;return false}
-sequence=parsed.valid;index=0;strip.replaceChildren();
+sequence=parsed.valid;activeWord=parsed.clean.trim().replace(/\s+/g,' ');index=0;strip.replaceChildren();
 sequence.forEach((ch,i)=>{const b=document.createElement('button');b.type='button';b.textContent=ch;b.setAttribute('aria-label','הצגת האות '+ch+', '+(i+1)+' מתוך '+sequence.length);b.addEventListener('click',()=>{stop();index=i;render()});strip.appendChild(b)});
 render();
 if(updateUrl){const u=new URL(location.href);u.searchParams.set('word',parsed.clean.trim());history.replaceState(null,'',u.pathname+u.search+u.hash)}
@@ -194,6 +208,131 @@ speed.addEventListener('change',()=>{if(timer!==null){stop();play.click()}});
 document.getElementById('spelling-reset').addEventListener('click',()=>{stop();index=0;feedback.textContent='חזרנו לאות הראשונה';render()});
 document.getElementById('spelling-share').addEventListener('click',async()=>{if(!sequence.length)return;const u=new URL(location.href);u.searchParams.set('word',input.value.trim());try{await navigator.clipboard.writeText(u.toString());feedback.textContent='הקישור הועתק';}catch(e){feedback.textContent='לא ניתן להעתיק אוטומטית. העתיקו את כתובת העמוד מסרגל הדפדפן.';}});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});
+
+// A branded story graphic is rendered locally in the visitor's browser; no words are uploaded.
+const exportButton=document.getElementById('spelling-download');
+const nativeShare=document.getElementById('spelling-native-share');
+const exportStatus=document.getElementById('spelling-export-status');
+const atlasPromise=loadExportImage('/assets/fingerspelling-atlas.png');
+const logoPromise=loadExportImage('/assets/logo.png').catch(()=>null);
+function loadExportImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>reject(new Error('Cannot load image: '+src));
+    img.src=src;
+    if(img.complete&&img.naturalWidth)resolve(img);
+  });
+}
+function roundedPath(ctx,x,y,w,h,r){
+  const rad=Math.min(r,w/2,h/2);
+  ctx.beginPath();ctx.moveTo(x+rad,y);
+  ctx.lineTo(x+w-rad,y);ctx.quadraticCurveTo(x+w,y,x+w,y+rad);
+  ctx.lineTo(x+w,y+h-rad);ctx.quadraticCurveTo(x+w,y+h,x+w-rad,y+h);
+  ctx.lineTo(x+rad,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-rad);
+  ctx.lineTo(x,y+rad);ctx.quadraticCurveTo(x,y,x+rad,y);ctx.closePath();
+}
+function fitCanvasFont(ctx,text,maxW,initial,min){
+  let size=initial;
+  ctx.font='700 '+size+'px Arial, "Noto Sans Hebrew", sans-serif';
+  while(ctx.measureText(text).width>maxW&&size>min){
+    size-=2;ctx.font='700 '+size+'px Arial, "Noto Sans Hebrew", sans-serif';
+  }
+}
+function renderExportCanvas(atlas,logo){
+  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1920;
+  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');
+  const burgundy='#80113f',ink='#231d22',cream='#faf7f2';
+  ctx.fillStyle=cream;ctx.fillRect(0,0,1080,1920);
+  ctx.fillStyle=burgundy;ctx.fillRect(0,0,1080,22);
+  ctx.fillStyle='#f4e8ec';ctx.beginPath();ctx.arc(1010,620,230,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(55,1400,175,0,Math.PI*2);ctx.fill();
+
+  // The original Lev HaSiman logo stays visible on shared images.
+  if(logo&&logo.naturalWidth){
+    const sc=Math.min(390/logo.naturalWidth,152/logo.naturalHeight);
+    const w=logo.naturalWidth*sc,h=logo.naturalHeight*sc;
+    ctx.drawImage(logo,(1080-w)/2,58,w,h);
+  }else{
+    ctx.fillStyle=burgundy;ctx.font='700 68px Arial, sans-serif';ctx.textAlign='center';ctx.fillText('לב הסימן',540,160);
+  }
+  ctx.textAlign='center';ctx.direction='rtl';
+  ctx.fillStyle=burgundy;ctx.font='700 62px Arial, "Noto Sans Hebrew", sans-serif';
+  ctx.fillText('מאייתים מהלב',540,295);
+  ctx.fillStyle=ink;ctx.font='600 43px Arial, "Noto Sans Hebrew", sans-serif';
+  ctx.fillText('כך מאייתים את השם שלי באצבעות',540,369);
+  const label=activeWord||sequence.join('');
+  ctx.fillStyle=burgundy;fitCanvasFont(ctx,label,920,96,34);
+  ctx.fillText(label,540,486);
+  ctx.fillStyle=ink;ctx.font='400 30px Arial, "Noto Sans Hebrew", sans-serif';
+  ctx.fillText('איות באצבעות בשפת הסימנים הישראלית',540,553);
+
+  const n=sequence.length;
+  const columns=n<=2?n:n<=4?2:n<=9?3:n<=16?4:5;
+  const rows=Math.ceil(n/columns);
+  const gap=n>16?13:19,availableW=930,availableH=1035;
+  const cell=Math.floor(Math.min(308,(availableW-gap*(columns-1))/columns,(availableH-gap*(rows-1))/rows));
+  const totalW=columns*cell+(columns-1)*gap,totalH=rows*cell+(rows-1)*gap;
+  const startX=(1080-totalW)/2,startY=620+(availableH-totalH)/2;
+  const tileW=atlas.naturalWidth/7,tileH=atlas.naturalHeight/4;
+  sequence.forEach((letter,i)=>{
+    const col=i%columns,row=Math.floor(i/columns);
+    const x=startX+col*(cell+gap),y=startY+row*(cell+gap);
+    ctx.save();roundedPath(ctx,x,y,cell,cell,Math.min(19,cell/8));ctx.clip();
+    ctx.fillStyle=burgundy;ctx.fillRect(x,y,cell,cell);
+    const loc=letters[letter];
+    // Preserve the artwork's original 7x4 sprite coordinates, including movement arrows.
+    ctx.drawImage(atlas,loc[0]*tileW,loc[1]*tileH,tileW,tileH,x,y,cell,cell);
+    ctx.restore();
+  });
+  ctx.fillStyle=burgundy;ctx.fillRect(0,1695,1080,225);
+  ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.direction='rtl';
+  ctx.font='700 51px Arial, "Noto Sans Hebrew", sans-serif';
+  ctx.fillText('גם אתם רוצים לאיית את השם שלכם?',540,1778);
+  ctx.font='400 35px Arial, "Noto Sans Hebrew", sans-serif';
+  ctx.fillText('תרגול חינמי באתר לב הסימן',540,1832);
+  ctx.direction='ltr';fitCanvasFont(ctx,'levhasiman.co.il/fingerspelling-practice/',940,33,23);
+  ctx.fillText('levhasiman.co.il/fingerspelling-practice/',540,1880);
+  return canvas;
+}
+function canvasBlob(canvas){
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('PNG encoding failed')),'image/png');
+  });
+}
+async function createExportBlob(){
+  if(!sequence.length)throw new Error('No letters to export');
+  const [atlas,logo]=await Promise.all([atlasPromise,logoPromise]);
+  return canvasBlob(renderExportCanvas(atlas,logo));
+}
+async function handleExport(asShare){
+  if(!sequence.length){exportStatus.textContent='הקלידו מילה ולחצו על ״הציגו את האיות״.';return}
+  exportButton.disabled=true;nativeShare.disabled=true;exportStatus.textContent='מכינים את התמונה…';
+  try{
+    const blob=await createExportBlob();
+    const name='lev-hasiman-fingerspelling.png';
+    if(asShare&&typeof navigator.share==='function'&&typeof File==='function'){
+      const file=new File([blob],name,{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{await navigator.share({files:[file],title:'מאייתים מהלב',text:'אייתתי את השם שלי בשפת הסימנים הישראלית. גם אתם יכולים: https://levhasiman.co.il/fingerspelling-practice/'});
+          exportStatus.textContent='התמונה מוכנה לשיתוף.';return;
+        }catch(err){if(err&&err.name==='AbortError'){exportStatus.textContent='השיתוף בוטל.';return}}
+      }
+    }
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),30000);
+    exportStatus.textContent='התמונה הוכנה. אם היא נפתחה כתצוגה מקדימה, אפשר לשמור אותה דרך תפריט השיתוף.';
+  }catch(err){
+    exportStatus.textContent='לא הצלחנו להכין את התמונה כרגע. נסו לרענן את העמוד ולנסות שוב.';
+  }finally{exportButton.disabled=false;nativeShare.disabled=false}
+}
+exportButton.addEventListener('click',()=>handleExport(false));
+if(typeof navigator.share==='function'&&typeof navigator.canShare==='function'&&typeof File==='function'){
+  try{if(navigator.canShare({files:[new File(['test'],'test.png',{type:'image/png'})]}))nativeShare.hidden=false}catch(err){}
+}
+nativeShare.addEventListener('click',()=>handleExport(true));
+
 const requested=new URL(location.href).searchParams.get('word');if(requested)input.value=requested.slice(0,40);
 if(!setWord(input.value,false)){input.value='קארין';setWord(input.value,false)}
 })();
