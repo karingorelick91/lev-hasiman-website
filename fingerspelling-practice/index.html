@@ -109,7 +109,7 @@ html[data-theme="dark"] .spelling-tool,html[data-theme="dark"] .spelling-entry i
 <div class="spelling-settings"><label for="spelling-speed">מהירות הניגון</label><select id="spelling-speed"><option value="1900">לאט</option><option value="1250" selected>רגיל</option><option value="800">מהר</option></select><button type="button" class="text-link" id="spelling-reset">חזרה להתחלה</button><button type="button" class="text-link" id="spelling-share">העתקת קישור למילה</button></div>
 <p id="spelling-feedback" class="small-note" aria-live="polite"></p>
 <div class="spelling-export" aria-labelledby="spelling-export-title">
-<div class="spelling-export-heading"><h2 id="spelling-export-title">השם שלי בשפת הסימנים</h2><p>הפכו את האיות שלכם לתמונה ממותגת של לב הסימן, שמתאימה לסטורי ולשיתוף עם חברים. ללא תשלום וללא הרשמה.</p></div>
+<div class="spelling-export-heading"><h2 id="spelling-export-title">השם או המילה שלי באצבעות</h2><p>הפכו את האיות שלכם לתמונה ממותגת של לב הסימן, שמתאימה לסטורי ולשיתוף עם חברים. ללא תשלום וללא הרשמה.</p></div>
 <div class="spelling-export-actions"><button class="btn" type="button" id="spelling-download">הורדת תמונה לסטורי</button><button class="btn secondary" type="button" id="spelling-native-share" hidden>שיתוף תמונה</button></div>
 <p class="small-note" id="spelling-export-status" role="status" aria-live="polite"></p>
 </div>
@@ -261,7 +261,7 @@ function renderExportCanvas(atlas,logo){
   ctx.fillStyle=burgundy;ctx.font='700 62px Arial, "Noto Sans Hebrew", sans-serif';
   ctx.fillText('מאייתים מהלב',540,295);
   ctx.fillStyle=ink;ctx.font='600 43px Arial, "Noto Sans Hebrew", sans-serif';
-  ctx.fillText('כך מאייתים את השם שלי באצבעות',540,369);
+  ctx.fillText('כך מאייתים באצבעות',540,369);
   const label=activeWord||sequence.join('');
   ctx.fillStyle=burgundy;fitCanvasFont(ctx,label,920,96,34);
   ctx.fillText(label,540,486);
@@ -269,23 +269,18 @@ function renderExportCanvas(atlas,logo){
   ctx.fillText('איות באצבעות בשפת הסימנים הישראלית',540,553);
 
   const n=sequence.length;
-  // Hebrew reads right to left: names of up to eight letters stay on one line.
-  // Longer words use balanced rows so each hand drawing remains legible.
-  const rows=Math.ceil(n/8);
-  const columns=Math.ceil(n/rows);
-  const gap=n>16?13:19,availableW=930,availableH=1035;
-  const cell=Math.floor(Math.min(308,(availableW-gap*(columns-1))/columns,(availableH-gap*(rows-1))/rows));
-  const totalH=rows*cell+(rows-1)*gap;
-  const startY=620+(availableH-totalH)/2;
+  // Keep ANY entered Hebrew word on one horizontal row in logical RTL order.
+  // Fit up to the tool's 24-character limit into the story without clipping.
+  const gap=n<=6?18:n<=12?11:n<=20?6:3;
+  const availableW=970;
+  const cell=Math.max(1,Math.floor(Math.min(308,(availableW-gap*(n-1))/n)));
+  const totalW=n*cell+(n-1)*gap;
+  const rowLeft=(1080-totalW)/2;
+  const y=620+(1035-cell)/2;
   const tileW=atlas.naturalWidth/7,tileH=atlas.naturalHeight/4;
   sequence.forEach((letter,i)=>{
-    const row=Math.floor(i/columns),place=i%columns;
-    const lettersInRow=Math.min(columns,n-row*columns);
-    const rowWidth=lettersInRow*cell+(lettersInRow-1)*gap;
-    const rowLeft=(1080-rowWidth)/2;
-    // First letter goes on the RIGHT, with following letters to its left.
-    const x=rowLeft+(lettersInRow-1-place)*(cell+gap);
-    const y=startY+row*(cell+gap);
+    // Hebrew first letter appears on the RIGHT, proceeding leftwards.
+    const x=rowLeft+(n-1-i)*(cell+gap);
     ctx.save();roundedPath(ctx,x,y,cell,cell,Math.min(19,cell/8));ctx.clip();
     ctx.fillStyle=burgundy;ctx.fillRect(x,y,cell,cell);
     const loc=letters[letter];
@@ -296,7 +291,7 @@ function renderExportCanvas(atlas,logo){
   ctx.fillStyle=burgundy;ctx.fillRect(0,1695,1080,225);
   ctx.fillStyle='#ffffff';ctx.textAlign='center';ctx.direction='rtl';
   ctx.font='700 51px Arial, "Noto Sans Hebrew", sans-serif';
-  ctx.fillText('גם אתם רוצים לאיית את השם שלכם?',540,1778);
+  ctx.fillText('גם אתם רוצים לאיית שם או מילה?',540,1778);
   ctx.font='400 35px Arial, "Noto Sans Hebrew", sans-serif';
   ctx.fillText('תרגול חינמי באתר לב הסימן',540,1832);
   ctx.direction='ltr';fitCanvasFont(ctx,'levhasiman.co.il/fingerspelling-practice/',940,33,23);
