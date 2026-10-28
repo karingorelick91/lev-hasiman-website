@@ -11,7 +11,7 @@
     const link = event.target.closest && event.target.closest('a');
     if (!link) return;
     const channel = link.dataset.contact;
-    if (channel === 'whatsapp' || channel === 'email') {
+    if (channel === 'whatsapp' || channel === 'email' || channel === 'leadform') {
       // A contact click is NOT a lead, registration or paid purchase.
       track('contact_click', {contact_method: channel, service_page: page});
     } else if (link.dataset.serviceLink) {
