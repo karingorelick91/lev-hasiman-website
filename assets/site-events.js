@@ -216,6 +216,118 @@
     topbar.classList.add('i18n-enhanced');
   })();
 
+
+  // Accessible, consistent navigation pictograms across Hebrew, English and Russian.
+  // Decorative icons are hidden from assistive technology: link text remains unchanged.
+  (function setupMenuIconography() {
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const iconPaths = {
+      house: '<path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10Z"/><path d="M9 22V12h6v10"/>',
+      'graduation-cap': '<path d="m2 10 10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c3.5 2 8.5 2 12 0v-5"/><path d="M22 10v6"/>',
+      video: '<rect width="15" height="12" x="2" y="6" rx="2"/><path d="m17 10 5-3v10l-5-3Z"/>',
+      'circle-play': '<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4Z"/>',
+      users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+      'building-2': '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>',
+      'user-round': '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+      'message-square-heart': '<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H5l-3 2V11.5a9.5 9.5 0 1 1 19 0Z"/><path d="M12 15s-4-2.5-4-5a2.2 2.2 0 0 1 4-1.2A2.2 2.2 0 0 1 16 10c0 2.5-4 5-4 5Z"/>',
+      hand: '<path d="M8 13.5V6a2 2 0 0 1 4 0v6"/><path d="M12 6a2 2 0 0 1 4 0v6"/><path d="M16 8a2 2 0 0 1 4 0v7c0 4-3 7-7 7h-2c-3 0-5-1.5-7-5l-2-3a2 2 0 0 1 3-2l3 2"/>',
+      'book-open': '<path d="M12 7v14"/><path d="M3 18V4a1 1 0 0 1 1-1h4a4 4 0 0 1 4 4v14a4 4 0 0 0-4-4H4a1 1 0 0 0-1 1Z"/><path d="M21 18V4a1 1 0 0 0-1-1h-4a4 4 0 0 0-4 4v14a4 4 0 0 1 4-4h4a1 1 0 0 1 1 1Z"/>',
+      mail: '<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
+      globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/>'
+    };
+
+    function makeIcon(name, className) {
+      const svg = document.createElementNS(svgNs, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('width', '20');
+      svg.setAttribute('height', '20');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '1.8');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.setAttribute('focusable', 'false');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.classList.add(className);
+      svg.innerHTML = iconPaths[name];
+      return svg;
+    }
+
+    function iconFromLink(anchor) {
+      const address = anchor.getAttribute('href') || '';
+      let url;
+      try { url = new URL(address, window.location.href); } catch (_error) { return null; }
+      if (url.hash === '#courses') return 'graduation-cap';
+      if (url.hash === '#reviews') return 'message-square-heart';
+      if (url.hash === '#contact') return 'mail';
+      const parts = url.pathname.split('/').filter(Boolean);
+      const pageName = parts[parts.length - 1] || '';
+      const map = {
+        '': 'house', en: 'house', ru: 'house',
+        'sign-language-course': 'video',
+        'digital-course': 'circle-play',
+        'private-lessons': 'users',
+        organizations: 'building-2',
+        about: 'user-round',
+        'fingerspelling-practice': 'hand',
+        guides: 'book-open',
+        contact: 'mail',
+        'level-2': 'graduation-cap',
+        workshops: 'graduation-cap',
+        'closed-groups': 'users',
+        'deaf-culture-lecture': 'message-square-heart',
+        'usher-lecture': 'message-square-heart'
+      };
+      return Object.prototype.hasOwnProperty.call(map, pageName) ? map[pageName] : null;
+    }
+
+    document.querySelectorAll('header #site-nav, header .main-nav, header nav:not(.languages):not(#site-nav):not(.main-nav)').forEach(function (navigation) {
+      Array.from(navigation.children).forEach(function (item) {
+        if (item.tagName !== 'A' || item.classList.contains('has-menu-icon')) return;
+        const iconName = iconFromLink(item);
+        if (!iconName) return;
+        item.classList.add('has-menu-icon');
+        item.insertBefore(makeIcon(iconName, 'menu-link-icon'), item.firstChild);
+      });
+    });
+
+    const flags = { he: '🇮🇱', en: '🇬🇧', ru: '🇷🇺' };
+    document.querySelectorAll('.he-language-options a[lang], .site-header .languages a[lang], .site-footer .languages a[lang]').forEach(function (anchor) {
+      const lang = anchor.getAttribute('lang');
+      if (!flags[lang] || anchor.querySelector('.language-flag')) return;
+      const flag = document.createElement('span');
+      flag.className = 'language-flag';
+      flag.setAttribute('aria-hidden', 'true');
+      flag.textContent = flags[lang];
+      anchor.insertBefore(flag, anchor.firstChild);
+    });
+
+    document.querySelectorAll('.he-language-heading, .language-menu-heading').forEach(function (heading) {
+      if (!heading.querySelector('.menu-globe-icon')) {
+        heading.insertBefore(makeIcon('globe', 'menu-globe-icon'), heading.firstChild);
+      }
+    });
+
+    const style = document.createElement('style');
+    style.textContent = [
+      '.menu-link-icon{display:none;width:20px;height:20px;flex:0 0 20px;stroke:currentColor}',
+      '.language-flag{display:inline-block;flex:0 0 auto;font-size:1.1em;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;unicode-bidi:isolate}',
+      '.he-language-options a,.site-header .languages a,.site-footer .languages a{display:inline-flex;align-items:center;justify-content:center;gap:7px}',
+      '.menu-globe-icon{display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-inline-end:9px}',
+      '@media(max-width:920px){',
+      'header nav:not(.languages):not(#site-nav):not(.main-nav) > a.has-menu-icon{display:inline-flex;align-items:center;gap:8px}',
+      'header nav:not(.languages):not(#site-nav):not(.main-nav) > a .menu-link-icon{display:block}',
+      '.header #site-nav > a.has-menu-icon{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:48px}',
+      '.header #site-nav > a .menu-link-icon{display:block}',
+      '}',
+      '@media(max-width:1000px){',
+      '.topbar.i18n-enhanced .main-nav > a.has-menu-icon{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:48px}',
+      '.topbar.i18n-enhanced .main-nav > a .menu-link-icon{display:block}',
+      '}'
+    ].join('');
+    document.head.appendChild(style);
+  })();
+
   function track(name, parameters) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, parameters);
