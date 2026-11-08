@@ -281,7 +281,7 @@
       return Object.prototype.hasOwnProperty.call(map, pageName) ? map[pageName] : null;
     }
 
-    document.querySelectorAll('header #site-nav, header .main-nav').forEach(function (navigation) {
+    document.querySelectorAll('header #site-nav, header .main-nav, header nav:not(.languages):not(#site-nav):not(.main-nav)').forEach(function (navigation) {
       Array.from(navigation.children).forEach(function (item) {
         if (item.tagName !== 'A' || item.classList.contains('has-menu-icon')) return;
         const iconName = iconFromLink(item);
@@ -315,6 +315,8 @@
       '.he-language-options a,.site-header .languages a,.site-footer .languages a{display:inline-flex;align-items:center;justify-content:center;gap:7px}',
       '.menu-globe-icon{display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-inline-end:9px}',
       '@media(max-width:920px){',
+      'header nav:not(.languages):not(#site-nav):not(.main-nav) > a.has-menu-icon{display:inline-flex;align-items:center;gap:8px}',
+      'header nav:not(.languages):not(#site-nav):not(.main-nav) > a .menu-link-icon{display:block}',
       '.header #site-nav > a.has-menu-icon{display:flex;align-items:center;justify-content:flex-start;gap:12px;min-height:48px}',
       '.header #site-nav > a .menu-link-icon{display:block}',
       '}',
