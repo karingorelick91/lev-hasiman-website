@@ -3,6 +3,16 @@
   // Only fixed, public page identifiers are sent. Never send message text,
   // names, email addresses, telephone numbers or query parameters.
   const page = document.body.dataset.page || 'home';
+  // Keep copyright dates current each January without changing event dates.
+  const currentYear = String(new Date().getFullYear());
+  document.querySelectorAll('footer').forEach(function (footer) {
+    const walker = document.createTreeWalker(footer, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      node.nodeValue = node.nodeValue.replace(/(©\s*)20\d{2}/g, '$1' + currentYear);
+    }
+  });
+
   function track(name, parameters) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, parameters);
