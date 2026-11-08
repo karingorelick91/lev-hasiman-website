@@ -9,7 +9,7 @@
     const walker = document.createTreeWalker(footer, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
-      node.nodeValue = node.nodeValue.replace(/(©\\s*)20\\d{2}/g, '$1' + currentYear);
+      node.nodeValue = node.nodeValue.replace(/(©\s*)20\d{2}/g, '$1' + currentYear);
     }
   });
 
