@@ -16,7 +16,7 @@
   // Language selector on existing Hebrew pages; unsupported translations open the locale homepage.
   const localizedPages = new Set(['', 'about', 'digital-course', 'private-lessons', 'sign-language-course', 'organizations', 'deaf-culture-lecture', 'usher-lecture', 'contact']);
   if (document.documentElement.lang === 'he') {
-    const currentPath = window.location.pathname.replace(/^\\/+|\\/+$/g, '');
+    const currentPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
     const translatedPath = localizedPages.has(currentPath) ? currentPath : '';
     const target = document.querySelector('header .header-actions') || document.querySelector('header nav') || document.querySelector('header');
     if (target) {
