@@ -13,6 +13,27 @@
     }
   });
 
+  // Language selector on existing Hebrew pages; unsupported translations open the locale homepage.
+  const localizedPages = new Set(['', 'about', 'digital-course', 'private-lessons', 'sign-language-course', 'organizations', 'deaf-culture-lecture', 'usher-lecture', 'contact']);
+  if (document.documentElement.lang === 'he') {
+    const currentPath = window.location.pathname.replace(/^\\/+|\\/+$/g, '');
+    const translatedPath = localizedPages.has(currentPath) ? currentPath : '';
+    const target = document.querySelector('header .header-actions') || document.querySelector('header nav') || document.querySelector('header');
+    if (target) {
+      const nav = document.createElement('nav');
+      nav.setAttribute('aria-label', 'בחירת שפה');
+      nav.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:5px;direction:ltr;';
+      [['עברית', '/'], ['EN', '/en/' + (translatedPath ? translatedPath + '/' : '')], ['RU', '/ru/' + (translatedPath ? translatedPath + '/' : '')]].forEach(function (item, i) {
+        const a = document.createElement('a');
+        a.href = item[1]; a.textContent = item[0];
+        a.style.cssText = 'display:inline-block;padding:3px 7px;border:1px solid #a6808c;border-radius:7px;background:#fff;color:#6b1330;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;';
+        if (i === 0) { a.setAttribute('aria-current', 'page'); }
+        nav.appendChild(a);
+      });
+      target.appendChild(nav);
+    }
+  }
+
   function track(name, parameters) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, parameters);
