@@ -13,27 +13,93 @@
     }
   });
 
-  // Language selector on existing Hebrew pages; unsupported translations open the locale homepage.
-  const localizedPages = new Set(['', 'about', 'digital-course', 'private-lessons', 'sign-language-course', 'organizations', 'deaf-culture-lecture', 'usher-lecture', 'contact']);
+  // Keep desktop language switching available and place a dedicated language section
+  // inside the existing Hebrew hamburger menu on small screens.
+  const localizedPages = new Set(['', 'about', 'digital-course', 'private-lessons', 'sign-language-course', 'organizations', 'deaf-culture-lecture', 'usher-lecture', 'contact', 'thanks']);
   if (document.documentElement.lang === 'he') {
     const currentPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
     const translatedPath = localizedPages.has(currentPath) ? currentPath : '';
-    const target = document.querySelector('header .header-actions') || document.querySelector('header nav') || document.querySelector('header');
-    if (target) {
-      const nav = document.createElement('nav');
-      nav.setAttribute('aria-label', 'בחירת שפה');
-      nav.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:5px;direction:ltr;';
-      [['עברית', '/'], ['EN', '/en/' + (translatedPath ? translatedPath + '/' : '')], ['RU', '/ru/' + (translatedPath ? translatedPath + '/' : '')]].forEach(function (item, i) {
+    const links = [
+      ['עברית', '/' + (currentPath ? currentPath + '/' : ''), 'he'],
+      ['English', '/en/' + (translatedPath ? translatedPath + '/' : ''), 'en'],
+      ['Русский', '/ru/' + (translatedPath ? translatedPath + '/' : ''), 'ru']
+    ];
+    const actions = document.querySelector('header .header-actions');
+    const siteNav = document.querySelector('header #site-nav');
+
+    function addLinks(target) {
+      const options = document.createElement('div');
+      options.className = 'he-language-options';
+      links.forEach(function (item) {
         const a = document.createElement('a');
-        a.href = item[1]; a.textContent = item[0];
-        a.style.cssText = 'display:inline-block;padding:3px 7px;border:1px solid #a6808c;border-radius:7px;background:#fff;color:#6b1330;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;';
-        if (i === 0) { a.setAttribute('aria-current', 'page'); }
-        nav.appendChild(a);
+        a.href = item[1];
+        a.lang = item[2];
+        a.hreflang = item[2];
+        a.textContent = item[0];
+        if (item[2] === 'he') a.setAttribute('aria-current', 'page');
+        if (item[2] !== 'he' && !localizedPages.has(currentPath)) {
+          a.title = 'העמוד טרם תורגם. מעבר לדף הבית בשפה זו.';
+        }
+        options.appendChild(a);
       });
-      target.appendChild(nav);
+      target.appendChild(options);
+    }
+
+    if (actions && siteNav) {
+      const desktopLanguages = document.createElement('div');
+      desktopLanguages.className = 'he-language-desktop';
+      desktopLanguages.setAttribute('role', 'group');
+      desktopLanguages.setAttribute('aria-label', 'בחירת שפה');
+      addLinks(desktopLanguages);
+      actions.appendChild(desktopLanguages);
+
+      const mobileLanguages = document.createElement('section');
+      mobileLanguages.className = 'he-language-mobile';
+      mobileLanguages.setAttribute('role', 'group');
+      mobileLanguages.setAttribute('aria-label', 'בחירת שפה');
+      const heading = document.createElement('span');
+      heading.className = 'he-language-heading';
+      heading.textContent = 'שפות';
+      heading.setAttribute('role', 'heading');
+      heading.setAttribute('aria-level', '2');
+      mobileLanguages.appendChild(heading);
+      addLinks(mobileLanguages);
+      siteNav.appendChild(mobileLanguages);
+
+      const style = document.createElement('style');
+      style.textContent = [
+        '.he-language-desktop{display:flex;flex-wrap:wrap;align-items:center;direction:ltr;gap:5px}',
+        '.he-language-desktop .he-language-options{display:flex;flex-wrap:wrap;gap:5px}',
+        '.he-language-desktop a{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:3px 8px;border:1px solid var(--line);border-radius:7px;background:var(--white);color:var(--wine);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}',
+        '.he-language-desktop a[aria-current="page"]{background:var(--wine);color:var(--white)}',
+        '.he-language-mobile{display:none}',
+        '@media(max-width:920px){',
+        '.header .header-actions .he-language-desktop{display:none!important}',
+        '.header .nav .he-language-mobile{display:flex;flex-direction:column;gap:10px;padding:16px 10px 12px;margin-top:12px;border-top:1px solid var(--line);direction:rtl}',
+        '.header .nav .he-language-heading{display:block;color:var(--dark);font-size:1.0625rem;font-weight:800;line-height:1.5}',
+        '.header .nav .he-language-options{display:flex;flex-wrap:wrap;gap:10px;direction:ltr}',
+        '.header .nav .he-language-options a{display:inline-flex;align-items:center;justify-content:center;flex:1 1 84px;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--white);color:var(--wine);text-align:center;text-decoration:none;font-size:1rem;font-weight:700;line-height:1.3;white-space:nowrap}',
+        '.header .nav .he-language-options a[aria-current="page"]{background:var(--wine);color:var(--white);border-color:var(--wine)}',
+        '.header .nav .he-language-options a:hover,.header .nav .he-language-options a:focus-visible{outline-offset:2px;border-color:var(--wine)}',
+        '}'
+      ].join('');
+      document.head.appendChild(style);
+    } else {
+      // Small standalone Hebrew pages have no hamburger menu.
+      const target = document.querySelector('header nav') || document.querySelector('header');
+      if (target) {
+        const fallback = document.createElement('div');
+        fallback.setAttribute('role', 'group');
+        fallback.setAttribute('aria-label', 'בחירת שפה');
+        fallback.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:7px;direction:ltr';
+        addLinks(fallback);
+        fallback.querySelectorAll('a').forEach(function (a) {
+          a.style.cssText = 'display:inline-block;padding:5px 8px;border:1px solid #a6808c;border-radius:7px;background:#fff;color:#6b1330;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap';
+        });
+        target.appendChild(fallback);
+      }
     }
   }
-
 
   // Reuse the Hebrew site's theme preference and add responsive navigation to all localized pages.
   (function setupLocalizedHeader() {
