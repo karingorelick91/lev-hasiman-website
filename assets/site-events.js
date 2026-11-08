@@ -34,6 +34,122 @@
     }
   }
 
+
+  // Reuse the Hebrew site's theme preference and add responsive navigation to all localized pages.
+  (function setupLocalizedHeader() {
+    const locale = document.documentElement.lang;
+    if (locale !== 'en' && locale !== 'ru') return;
+    const topbar = document.querySelector('.site-header .topbar');
+    if (!topbar) return;
+    const siteNav = topbar.querySelector('.main-nav');
+    const languageNav = topbar.querySelector('.languages');
+    if (!siteNav || !languageNav) return;
+
+    const labels = locale === 'ru'
+      ? { dark: 'Тёмная тема', light: 'Светлая тема', menu: 'Меню', close: 'Закрыть меню', languages: 'Языки' }
+      : { dark: 'Dark mode', light: 'Light mode', menu: 'Menu', close: 'Close menu', languages: 'Languages' };
+
+    siteNav.id = 'localized-site-nav';
+    languageNav.id = 'localized-language-nav';
+    const languageHeading = document.createElement('span');
+    languageHeading.className = 'language-menu-heading';
+    languageHeading.textContent = labels.languages;
+    languageHeading.setAttribute('role', 'heading');
+    languageHeading.setAttribute('aria-level', '2');
+    languageNav.insertBefore(languageHeading, languageNav.firstChild);
+
+    const controls = document.createElement('div');
+    controls.className = 'header-controls';
+
+    const themeButton = document.createElement('button');
+    themeButton.type = 'button';
+    themeButton.className = 'theme-toggle';
+    const themeIcon = document.createElement('span');
+    themeIcon.className = 'theme-icon';
+    themeIcon.setAttribute('aria-hidden', 'true');
+    const themeLabel = document.createElement('span');
+    themeLabel.className = 'theme-label';
+    themeButton.appendChild(themeIcon);
+    themeButton.appendChild(themeLabel);
+
+    const menuButton = document.createElement('button');
+    menuButton.type = 'button';
+    menuButton.className = 'menu-toggle';
+    menuButton.setAttribute('aria-controls', 'localized-site-nav localized-language-nav');
+    menuButton.setAttribute('aria-expanded', 'false');
+    const bars = document.createElement('span');
+    bars.className = 'hamburger';
+    bars.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 3; i += 1) {
+      bars.appendChild(document.createElement('span'));
+    }
+    const menuLabel = document.createElement('span');
+    menuLabel.className = 'menu-label';
+    menuLabel.textContent = labels.menu;
+    menuButton.setAttribute('aria-label', labels.menu);
+    menuButton.appendChild(bars);
+    menuButton.appendChild(menuLabel);
+    controls.appendChild(themeButton);
+    controls.appendChild(menuButton);
+    topbar.appendChild(controls);
+
+    const logo = topbar.querySelector('.brand img');
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    const root = document.documentElement;
+    function applyTheme(theme) {
+      const dark = theme === 'dark';
+      root.setAttribute('data-theme', dark ? 'dark' : 'light');
+      themeButton.setAttribute('aria-pressed', String(dark));
+      themeButton.setAttribute('aria-label', dark ? labels.light : labels.dark);
+      themeLabel.textContent = dark ? labels.light : labels.dark;
+      themeIcon.textContent = dark ? '☀' : '☾';
+      if (logo) logo.src = dark ? '/assets/logo-dark.png' : '/assets/logo.png';
+      if (themeColor) themeColor.setAttribute('content', dark ? '#20191e' : '#faf7f2');
+    }
+
+    let savedTheme;
+    try { savedTheme = window.localStorage.getItem('lev-hasiman-theme'); } catch (_error) {}
+    const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(savedTheme === 'dark' || savedTheme === 'light'
+      ? savedTheme : (systemDark ? 'dark' : 'light'));
+
+    themeButton.addEventListener('click', function () {
+      const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      try { window.localStorage.setItem('lev-hasiman-theme', nextTheme); } catch (_error) {}
+    });
+
+    function setMenu(open) {
+      topbar.classList.toggle('menu-open', open);
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', open ? labels.close : labels.menu);
+      menuLabel.textContent = open ? labels.close : labels.menu;
+    }
+    menuButton.addEventListener('click', function () {
+      setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        menuButton.focus();
+      }
+    });
+    document.addEventListener('click', function (event) {
+      if (menuButton.getAttribute('aria-expanded') === 'true' && !topbar.contains(event.target)) {
+        setMenu(false);
+      }
+    });
+    if (window.matchMedia) {
+      const wideView = window.matchMedia('(min-width: 1001px)');
+      if (wideView.addEventListener) {
+        wideView.addEventListener('change', function (event) {
+          if (event.matches) setMenu(false);
+        });
+      }
+    }
+    topbar.classList.add('i18n-enhanced');
+  })();
+
   function track(name, parameters) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, parameters);
