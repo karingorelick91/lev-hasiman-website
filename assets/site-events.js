@@ -328,6 +328,51 @@
     document.head.appendChild(style);
   })();
 
+
+  // Direct written contact in WhatsApp; retain the existing enquiry forms.
+  (function setupWhatsAppContact() {
+    const locale = document.documentElement.lang;
+    const labels = locale === 'ru'
+      ? {text:'Написать в WhatsApp', message:'Здравствуйте, Карин! Я нашёл(ла) сайт Lev HaSiman и хочу узнать о курсах.', dismiss:'Скрыть WhatsApp', restore:'Показать WhatsApp'}
+      : locale === 'en'
+      ? {text:'Chat on WhatsApp', message:'Hi Karin, I found the Lev HaSiman website and would like to learn about the courses.', dismiss:'Hide WhatsApp', restore:'Show WhatsApp'}
+      : {text:'בואו נדבר בוואטסאפ', message:"היי קארין, הגעתי דרך האתר של לב הסימן ואשמח לקבל פרטים על מסלולי הלימוד.", dismiss:'הסתרת כפתור וואטסאפ', restore:'הצגת כפתור וואטסאפ'};
+    const address = 'https://wa.me/447366454222?text=' + encodeURIComponent(labels.message);
+    const widget = document.getElementById('wa-widget');
+    const existing = widget && widget.querySelector('a.whatsapp-float');
+    const pictogram = "<svg aria-hidden=\"true\" focusable=\"false\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 11.5a9 9 0 0 1-9 9 9 9 0 0 1-4-.9L3 21l1.4-4.8A9 9 0 1 1 21 11.5Z\"/><path d=\"M8 8c0 4 4 8 8 8m-8-8 1.5-1.5 2 2.5-1.5 1.5m6 5.5 1.5-1.5-2.5-2-1.5 1.5\"/></svg>";
+    function configure(a, placement) {
+      a.href = address;
+      a.dataset.contact = 'whatsapp';
+      a.dataset.waPlacement = placement;
+      a.setAttribute('aria-label', labels.text);
+      a.classList.add('wa-contact-link');
+      a.innerHTML = pictogram + '<span></span>';
+      a.querySelector('span').textContent = labels.text;
+    }
+    if (existing) {
+      configure(existing, 'floating');
+      const dismiss = document.getElementById('wa-dismiss');
+      const restore = document.getElementById('wa-restore');
+      if (dismiss) { dismiss.setAttribute('aria-label',labels.dismiss); dismiss.title=labels.dismiss; }
+      if (restore) restore.textContent=labels.restore;
+    }
+    const route = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+    const service = route[route.length-1] || '';
+    if (['sign-language-course','digital-course','private-lessons','organizations','workshops','level-2','closed-groups','winter'].includes(service) && !document.querySelector('main [data-contact="whatsapp"]')) {
+      const section = document.querySelector('main #enroll .container, main #contact .container, main .launch-last-inner, main');
+      if (section) {
+        const a=document.createElement('a');
+        a.className='btn wa-contact-link';
+        configure(a,'service');
+        const p=document.createElement('p');p.style.marginTop='16px';p.appendChild(a);section.appendChild(p);
+      }
+    }
+    const style=document.createElement('style');
+    style.textContent='.wa-contact-link{background:#146c43!important;color:#fff!important;border-color:#146c43!important;gap:8px}.wa-contact-link:hover{background:#0d5030!important;color:#fff!important}.wa-contact-link:focus-visible{outline:4px solid #005fcc;outline-offset:4px}.wa-contact-link svg{flex:none}.whatsapp-float.wa-contact-link{border-color:#fff!important}.wa-contact-link:not(.whatsapp-float){display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none}';
+    document.head.appendChild(style);
+  })();
+
   function track(name, parameters) {
     if (typeof window.gtag !== 'function') return;
     window.gtag('event', name, parameters);
@@ -357,6 +402,7 @@
     if (channel === 'whatsapp' || channel === 'email' || channel === 'leadform') {
       // A contact click is NOT a lead, registration or paid purchase.
       track('contact_click', {contact_method: channel, service_page: page});
+      if (channel === 'whatsapp') track('whatsapp_click', {service_page: page, placement: ['floating','service','contact','home'].includes(link.dataset.waPlacement) ? link.dataset.waPlacement : 'other'});
     } else if (link.dataset.serviceLink) {
       const url = new URL(link.href, window.location.origin);
       track('service_view_click', {service_page: page, destination_path: url.pathname});
